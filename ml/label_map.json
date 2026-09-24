@@ -1,0 +1,349 @@
+{
+  "matooke": [
+    "matooke",
+    "matooke (steamed green banana)",
+    "amatooke",
+    "ebitooke",
+    "matoke",
+    "steamed plantain",
+    "mashed plantain",
+    "green banana"
+  ],
+  "posho": [
+    "posho",
+    "posho (maize meal / ugali)",
+    "kawunga",
+    "ugali",
+    "kwon",
+    "nshima",
+    "sadza",
+    "pap",
+    "banku"
+  ],
+  "kalo": [
+    "kalo",
+    "millet bread (kalo)",
+    "akaro",
+    "millet bread",
+    "atapa"
+  ],
+  "cassava-boiled": [
+    "cassava-boiled",
+    "boiled cassava",
+    "muwogo",
+    "gwana",
+    "cassava"
+  ],
+  "sweet-potato": [
+    "sweet-potato",
+    "boiled sweet potato",
+    "lumonde",
+    "bitakuli",
+    "sweet potato",
+    "sweet potatoes"
+  ],
+  "irish-potato": [
+    "irish-potato",
+    "boiled irish potatoes",
+    "lumonde lwa bazungu",
+    "irish"
+  ],
+  "yam": [
+    "yam",
+    "boiled yam",
+    "balugu"
+  ],
+  "rice": [
+    "rice",
+    "white rice (boiled)",
+    "omuceere",
+    "white rice",
+    "plain rice"
+  ],
+  "pilau": [
+    "pilau",
+    "pilau rice",
+    "pilawo"
+  ],
+  "chapati": [
+    "chapati",
+    "chapo",
+    "chapatti",
+    "flatbread"
+  ],
+  "gonja": [
+    "gonja",
+    "roasted plantain (gonja)",
+    "roasted gonja"
+  ],
+  "millet-porridge": [
+    "millet-porridge",
+    "millet porridge (obushera/bushera)",
+    "obushera",
+    "bushera",
+    "uji",
+    "porridge"
+  ],
+  "katogo": [
+    "katogo"
+  ],
+  "rolex": [
+    "rolex",
+    "rolex (chapati egg roll)",
+    "rolled eggs"
+  ],
+  "mandazi": [
+    "mandazi",
+    "maandazi",
+    "puff puff",
+    "mahamri",
+    "bofrot"
+  ],
+  "samosa": [
+    "samosa",
+    "sambusa"
+  ],
+  "kikomando": [
+    "kikomando",
+    "kikomando (chapati with beans)"
+  ],
+  "beans": [
+    "beans",
+    "bean stew",
+    "bijanjaalo",
+    "ebihimba",
+    "agwaya",
+    "red beans",
+    "githeri"
+  ],
+  "gnut-sauce": [
+    "gnut-sauce",
+    "groundnut sauce",
+    "binyebwa",
+    "ebinyobwa",
+    "odii",
+    "g-nut sauce",
+    "peanut sauce",
+    "groundnut soup",
+    "peanut soup",
+    "peanut stew",
+    "maafe",
+    "mafe"
+  ],
+  "peas": [
+    "peas",
+    "pea / cowpea stew",
+    "kaawo",
+    "boo"
+  ],
+  "eshabwe": [
+    "eshabwe",
+    "eshabwe (ghee sauce)"
+  ],
+  "luwombo": [
+    "luwombo",
+    "luwombo (steamed stew)",
+    "oluwombo"
+  ],
+  "chicken-stew": [
+    "chicken-stew",
+    "chicken stew",
+    "enkoko",
+    "chicken",
+    "chicken curry"
+  ],
+  "beef-stew": [
+    "beef-stew",
+    "beef stew",
+    "nyama",
+    "ente",
+    "beef"
+  ],
+  "goat-stew": [
+    "goat-stew",
+    "goat stew",
+    "embuzi",
+    "goat"
+  ],
+  "muchomo": [
+    "muchomo",
+    "muchomo (grilled meat skewers)",
+    "nyama choma",
+    "suya",
+    "grilled meat",
+    "kebab"
+  ],
+  "offal": [
+    "offal",
+    "offal stew (byenda)",
+    "byenda",
+    "mulokony",
+    "tripe"
+  ],
+  "tilapia-stew": [
+    "tilapia-stew",
+    "stewed / steamed tilapia",
+    "ngege",
+    "tilapia",
+    "fish",
+    "fish stew"
+  ],
+  "tilapia-fried": [
+    "tilapia-fried",
+    "fried tilapia",
+    "ngege enjokye",
+    "fried fish"
+  ],
+  "nile-perch": [
+    "nile-perch",
+    "nile perch (stewed)",
+    "mputa",
+    "nile perch"
+  ],
+  "mukene": [
+    "mukene",
+    "mukene (silver fish)",
+    "silverfish",
+    "dagaa",
+    "omena"
+  ],
+  "nsenene": [
+    "nsenene",
+    "nsenene (fried grasshoppers)",
+    "grasshoppers"
+  ],
+  "egg-boiled": [
+    "egg-boiled",
+    "boiled egg",
+    "eggi",
+    "egg",
+    "eggs"
+  ],
+  "milk": [
+    "milk",
+    "amata",
+    "caayi"
+  ],
+  "dodo": [
+    "dodo",
+    "dodo (amaranth greens)",
+    "doodo",
+    "amaranth",
+    "bbuga"
+  ],
+  "nakati": [
+    "nakati",
+    "nakati (garden egg leaves)",
+    "nakasugi"
+  ],
+  "sukuma-wiki": [
+    "sukuma-wiki",
+    "sukuma wiki (collard greens)",
+    "sukuma wiki",
+    "sukuma",
+    "kale",
+    "collard greens"
+  ],
+  "malakwang": [
+    "malakwang",
+    "malakwang with odii"
+  ],
+  "cabbage": [
+    "cabbage",
+    "cabbage stew",
+    "kabeeji"
+  ],
+  "entula": [
+    "entula",
+    "garden eggs (entula)",
+    "garden eggs",
+    "biringanya"
+  ],
+  "kachumbari": [
+    "kachumbari",
+    "kachumbari (tomato-onion salad)",
+    "salad",
+    "tomato salad"
+  ],
+  "carrots": [
+    "carrots",
+    "karoti"
+  ],
+  "mushrooms": [
+    "mushrooms",
+    "mushroom stew",
+    "obutiko"
+  ],
+  "avocado": [
+    "avocado",
+    "ovakedo"
+  ],
+  "pawpaw": [
+    "pawpaw",
+    "pawpaw (papaya)",
+    "papaali"
+  ],
+  "pineapple": [
+    "pineapple",
+    "nnanaanansi"
+  ],
+  "mango": [
+    "mango",
+    "muyembe"
+  ],
+  "sweet-banana": [
+    "sweet-banana",
+    "sweet banana (ndizi)",
+    "ndiizi",
+    "bogoya",
+    "sweet banana"
+  ],
+  "jackfruit": [
+    "jackfruit",
+    "ffene"
+  ],
+  "passion-fruit": [
+    "passion-fruit",
+    "passion fruit",
+    "katunda"
+  ],
+  "watermelon": [
+    "watermelon"
+  ],
+  "orange": [
+    "orange",
+    "mucungwa"
+  ],
+  "tea-milk-sugar": [
+    "tea-milk-sugar",
+    "african tea with milk & sugar",
+    "caayi",
+    "chai",
+    "african tea"
+  ],
+  "soda": [
+    "soda",
+    "soda / soft drink"
+  ],
+  "jollof-rice": [
+    "jollof-rice",
+    "jollof rice",
+    "jollof"
+  ],
+  "injera": [
+    "injera",
+    "enjera"
+  ],
+  "fufu": [
+    "fufu",
+    "foofoo",
+    "pounded yam",
+    "eba",
+    "garri"
+  ],
+  "egusi-soup": [
+    "egusi-soup",
+    "egusi soup",
+    "egusi"
+  ]
+}

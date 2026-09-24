@@ -1,0 +1,53 @@
+{
+  "expo": {
+    "name": "Foodio AI",
+    "slug": "foodio-ai",
+    "version": "1.0.0",
+    "scheme": "foodio",
+    "orientation": "default",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.foodio.ai",
+      "infoPlist": {
+        "NSCameraUsageDescription": "Foodio uses the camera to photograph your meals for nutrition analysis.",
+        "NSPhotoLibraryUsageDescription": "Foodio lets you choose meal photos from your library for analysis."
+      }
+    },
+    "android": {
+      "package": "com.foodio.ai",
+      "adaptiveIcon": {
+        "backgroundColor": "#1F7A4D",
+        "foregroundImage": "./assets/android-icon-foreground.png",
+        "backgroundImage": "./assets/android-icon-background.png",
+        "monochromeImage": "./assets/android-icon-monochrome.png"
+      },
+      "predictiveBackGestureEnabled": false,
+      "permissions": [
+        "android.permission.CAMERA"
+      ]
+    },
+    "web": {
+      "favicon": "./assets/favicon.png",
+      "output": "single",
+      "bundler": "metro",
+      "name": "Foodio AI",
+      "themeColor": "#1F7A4D"
+    },
+    "plugins": [
+      "expo-router",
+      "expo-font",
+      [
+        "expo-image-picker",
+        {
+          "cameraPermission": "Foodio uses the camera to photograph your meals for nutrition analysis.",
+          "photosPermission": "Foodio lets you choose meal photos from your library for analysis."
+        }
+      ]
+    ],
+    "experiments": {
+      "typedRoutes": false
+    }
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "cli": {
+    "appVersionSource": "remote"
+  },
+  "build": {
+    "preview": {
+      "distribution": "internal",
+      "android": {
+        "buildType": "apk"
+      },
+      "env": {
+        "EXPO_PUBLIC_API_URL": "https://YOUR-FOODIO-API.example.com"
+      }
+    },
+    "production": {
+      "autoIncrement": true,
+      "env": {
+        "EXPO_PUBLIC_API_URL": "https://YOUR-FOODIO-API.example.com"
+      }
+    }
+  },
+  "submit": {
+    "production": {}
+  }
+}
