@@ -3,6 +3,7 @@ import { GROUP_LABELS } from '@shared/nutrition';
 import { StyleSheet, Text, View } from 'react-native';
 import Svg, { Circle, G, Path, Text as SvgText } from 'react-native-svg';
 import { colors, groupColors, space } from '@/lib/theme';
+import { SVG_FONT } from './Charts';
 
 export interface PlateSlice {
   group: FoodGroup;
@@ -60,6 +61,7 @@ export function PlateView({ slices, size = 220, showLegend = true }: { slices: P
             .filter((a) => a.pct >= 8)
             .map((a, i) => (
               <SvgText
+                fontFamily={SVG_FONT}
                 key={`t${i}`}
                 x={cx + r * 0.62 * Math.sin(a.mid)}
                 y={cy - r * 0.62 * Math.cos(a.mid) + 5}

@@ -24,7 +24,7 @@ export default function TabsLayout() {
       <Tabs.Screen name="index" options={{ title: 'Scan', tabBarIcon: icon('camera') }} />
       <Tabs.Screen name="kitchen" options={{ title: 'Kitchen', tabBarIcon: icon('restaurant') }} />
       <Tabs.Screen name="foods" options={{ title: 'Foods', tabBarIcon: icon('nutrition') }} />
-      <Tabs.Screen name="history" options={{ title: 'History', tabBarIcon: icon('time') }} />
+      <Tabs.Screen name="progress" options={{ title: 'Progress', tabBarIcon: icon('trending-down') }} />
       <Tabs.Screen name="profile" options={{ title: 'Health', tabBarIcon: icon('heart') }} />
     </Tabs>
   );

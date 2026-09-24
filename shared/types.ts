@@ -22,7 +22,11 @@ export type FoodTag =
   | 'fiber-rich'
   | 'whole-grain'
   | 'plant-protein'
-  | 'processed';
+  | 'processed'
+  | 'contains-meat' // meat, poultry or insects (not vegetarian)
+  | 'red-meat'
+  | 'raw' // served uncooked (food-safety relevance for low immunity)
+  | 'acidic-spicy';
 
 export interface NutrientsPer100g {
   kcal: number;
@@ -58,7 +62,44 @@ export type HealthCondition =
   | 'anemia'
   | 'ulcers-gerd'
   | 'gout'
-  | 'celiac';
+  | 'celiac'
+  | 'cancer';
+
+export type DietPlan =
+  | 'keto'
+  | 'low-carb'
+  | 'intermittent-fasting'
+  | 'mediterranean'
+  | 'dash'
+  | 'vegetarian'
+  | 'vegan'
+  | 'high-protein';
+
+export interface FastingWindow {
+  /** Hour of day (0–23) the eating window opens, e.g. 12 for 12:00. */
+  startHour: number;
+  /** Length of the eating window in hours, e.g. 8 for 16:8. */
+  hours: number;
+}
+
+export interface WeightGoal {
+  startWeightKg: number;
+  targetWeightKg: number;
+  startDate: string; // YYYY-MM-DD
+  targetDate: string; // YYYY-MM-DD
+}
+
+export type CancerSymptom = 'nausea' | 'mouth-sores' | 'low-appetite' | 'unintended-weight-loss' | 'low-immunity' | 'taste-changes';
+
+export interface CancerCare {
+  phase: 'in-treatment' | 'recovery';
+  symptoms: CancerSymptom[];
+}
+
+export interface WeighIn {
+  date: string; // YYYY-MM-DD
+  kg: number;
+}
 
 export type Allergy = 'peanut' | 'gluten' | 'fish' | 'egg' | 'dairy';
 
@@ -75,6 +116,25 @@ export interface HealthProfile {
   conditions: HealthCondition[];
   allergies: Allergy[];
   notes?: string; // free-text, e.g. medications or doctor's advice
+  dietPlans?: DietPlan[];
+  fastingWindow?: FastingWindow;
+  weightGoal?: WeightGoal;
+  cancerCare?: CancerCare;
+}
+
+/** What the person has already eaten today, sent with each check. */
+export interface EatingContext {
+  localTime?: string; // "HH:MM" on the person's device
+  todayKcal?: number;
+  todayCarbs?: number;
+  mealsToday?: number;
+  currentWeightKg?: number;
+}
+
+export interface HiddenAdditions {
+  saltMg: number; // extra sodium, mg
+  oilG: number;
+  sugarG: number;
 }
 
 export interface MealItem {
@@ -85,20 +145,22 @@ export interface MealItem {
   preparation: string;
   confidence: number; // 0..1
   group: FoodGroup;
-  nutrients: Omit<NutrientsPer100g, 'sodiumMg'> & { sodiumMg: number }; // totals for this portion
+  nutrients: NutrientsPer100g; // totals for this portion, including hidden additions
+  hidden: HiddenAdditions; // salt, oil and sugar added beyond the usual recipe
 }
 
 export interface ClarifyingQuestion {
   id: string;
   question: string;
   options: string[];
+  kind: 'identity' | 'preparation' | 'hidden-ingredient' | 'portion';
 }
 
 export type Verdict = 'good' | 'caution' | 'avoid';
 
 export interface HealthFlag {
   severity: 'info' | 'warning' | 'danger';
-  condition: HealthCondition | Allergy | 'general';
+  condition: HealthCondition | Allergy | DietPlan | 'weight-goal' | 'food-safety' | 'general';
   message: string;
 }
 
@@ -127,6 +189,21 @@ export interface MealAnalysis {
   questions: ClarifyingQuestion[];
   overallConfidence: number;
   analyzedAt: string;
+  budget?: CalorieBudget;
+  fromPhoto: boolean;
+}
+
+export interface CalorieBudget {
+  dailyKcal: number;
+  consumedBefore: number;
+  afterMeal: number;
+  remaining: number; // after this meal; negative = over budget
+}
+
+export interface CoachAdvice {
+  headline: string;
+  advice: string[];
+  nextMealIdeas: { name: string; kcal: number; why: string }[];
 }
 
 export interface RecipeIdea {

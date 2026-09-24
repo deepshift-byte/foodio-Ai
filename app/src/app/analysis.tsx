@@ -17,7 +17,7 @@ const LOADING_LINES = [
 ];
 
 export default function AnalysisScreen() {
-  const { scan, setScan, profile, hasProfile, addOrUpdateHistory } = useStore();
+  const { scan, setScan, profile, hasProfile, addOrUpdateHistory, eatingContext } = useStore();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [line, setLine] = useState(0);
@@ -30,21 +30,22 @@ export default function AnalysisScreen() {
       setError(null);
       try {
         const analysis = await analyzeMeal({
-          imageBase64: scan.image.base64,
+          imageBase64: scan.image?.base64,
           profile: hasProfile ? profile : undefined,
+          context: eatingContext(scan.historyId),
           note: scan.note,
           answers: answers.length ? answers : undefined,
         });
         const historyId = scan.historyId ?? `${Date.now()}`;
         setScan({ ...scan, analysis, answers, historyId });
-        addOrUpdateHistory({ id: historyId, thumbnail: scan.image.thumbnail, analysis });
+        addOrUpdateHistory({ id: historyId, thumbnail: scan.image?.thumbnail, analysis });
       } catch (e) {
         setError(e instanceof Error ? e.message : 'Analysis failed.');
       } finally {
         setLoading(false);
       }
     },
-    [scan, setScan, profile, hasProfile, addOrUpdateHistory],
+    [scan, setScan, profile, hasProfile, addOrUpdateHistory, eatingContext],
   );
 
   useEffect(() => {
@@ -75,7 +76,14 @@ export default function AnalysisScreen() {
     return (
       <Screen>
         <Card style={{ padding: 0, overflow: 'hidden' }}>
-          <Image source={{ uri: scan.image.uri }} style={styles.photo} resizeMode="cover" />
+          {scan.image ? (
+            <Image source={{ uri: scan.image.uri }} style={styles.photo} resizeMode="cover" />
+          ) : (
+            <View style={styles.described}>
+              <Ionicons name="chatbubble-ellipses" size={28} color={colors.primary} />
+              <Text style={styles.describedText}>“{scan.note}”</Text>
+            </View>
+          )}
           <View style={styles.loadingBox}>
             {loading && <ActivityIndicator size="large" color={colors.primary} />}
             {loading && <Text style={styles.loadingText}>{LOADING_LINES[line]}</Text>}
@@ -91,7 +99,8 @@ export default function AnalysisScreen() {
     <Screen>
       <AnalysisView
         analysis={scan.analysis}
-        imageUri={scan.image.uri}
+        imageUri={scan.image?.uri}
+        description={scan.image ? undefined : scan.note}
         questionsSlot={
           scan.analysis.questions.length > 0 ? (
             <QuestionsCard
@@ -128,9 +137,15 @@ function QuestionsCard({
   return (
     <Card style={styles.questions}>
       <SectionTitle icon="chatbubbles">Foodio has a few questions</SectionTitle>
-      <Body muted>Your answers help Foodio get the portions and advice right.</Body>
+      <Body muted>Some things — like salt, oil or sugar — can't be seen in a photo. Your answers help Foodio get the numbers and advice right.</Body>
       {questions.map((q) => (
         <View key={q.id} style={{ gap: space(2) }}>
+          {q.kind === 'hidden-ingredient' && (
+            <View style={styles.hiddenBadge}>
+              <Ionicons name="eye-off" size={12} color={colors.accent} />
+              <Text style={styles.hiddenBadgeText}>Invisible ingredient</Text>
+            </View>
+          )}
           <Text style={styles.q}>{q.question}</Text>
           <View style={styles.chips}>
             {q.options.map((o) => (
@@ -169,6 +184,19 @@ function QuestionsCard({
 
 const styles = StyleSheet.create({
   photo: { width: '100%', height: 320, backgroundColor: colors.surfaceAlt },
+  described: { padding: space(6), alignItems: 'center', gap: space(3), backgroundColor: colors.primarySoft },
+  describedText: { fontSize: 18, fontWeight: '600', color: colors.text, textAlign: 'center', fontStyle: 'italic' },
+  hiddenBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+    alignSelf: 'flex-start',
+    backgroundColor: colors.accentSoft,
+    paddingHorizontal: 8,
+    paddingVertical: 2,
+    borderRadius: radius.pill,
+  },
+  hiddenBadgeText: { fontSize: 12, fontWeight: '700', color: '#9A5A12' },
   loadingBox: { padding: space(6), alignItems: 'center', gap: space(3) },
   loadingText: { fontSize: 17, fontWeight: '700', color: colors.text },
   questions: { borderColor: colors.accent, borderWidth: 1.5 },

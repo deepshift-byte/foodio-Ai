@@ -19,7 +19,7 @@ const MEAL_TYPES = ['any', 'breakfast', 'lunch', 'dinner', 'snack'] as const;
 
 export default function KitchenScreen() {
   const params = useLocalSearchParams<{ dish?: string }>();
-  const { profile, hasProfile, setRecipe } = useStore();
+  const { profile, hasProfile, setRecipe, eatingContext } = useStore();
   const { isWide } = useLayout();
   const [ingredients, setIngredients] = useState<string[]>([]);
   const [draft, setDraft] = useState('');
@@ -51,7 +51,13 @@ export default function KitchenScreen() {
     setError(null);
     try {
       setResult(
-        await getRecipes({ ingredients, dish: dish.trim() || undefined, mealType, profile: hasProfile ? profile : undefined }),
+        await getRecipes({
+          ingredients,
+          dish: dish.trim() || undefined,
+          mealType,
+          profile: hasProfile ? profile : undefined,
+          context: eatingContext(),
+        }),
       );
     } catch (e) {
       setError(e instanceof Error ? e.message : 'Could not get recipes.');

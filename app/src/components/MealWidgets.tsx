@@ -1,4 +1,5 @@
 import { Ionicons } from '@expo/vector-icons';
+import { DIET_LABELS } from '@shared/nutrition';
 import type { HealthFlag, NutrientsPer100g, Verdict } from '@shared/types';
 import { StyleSheet, Text, View } from 'react-native';
 import Svg, { Circle } from 'react-native-svg';
@@ -79,6 +80,23 @@ export function NutrientBars({ totals }: { totals: NutrientsPer100g }) {
   );
 }
 
+const FLAG_LABELS: Record<string, string> = {
+  ...DIET_LABELS,
+  'weight-goal': 'Weight goal',
+  'food-safety': 'Food safety',
+  'weight-loss': 'Weight loss',
+  'high-cholesterol': 'Cholesterol',
+  'kidney-disease': 'Kidneys',
+  'ulcers-gerd': 'Ulcers / reflux',
+  cancer: 'Cancer care',
+  peanut: 'Groundnut allergy',
+  gluten: 'Gluten',
+};
+
+export function flagLabel(condition: string) {
+  return FLAG_LABELS[condition] ?? condition[0].toUpperCase() + condition.slice(1).replace(/-/g, ' ');
+}
+
 const FLAG_STYLE = {
   danger: { icon: 'close-circle', color: colors.danger, bg: colors.dangerSoft },
   warning: { icon: 'alert-circle', color: colors.warning, bg: colors.warningSoft },
@@ -97,12 +115,44 @@ export function FlagList({ flags }: { flags: HealthFlag[] }) {
             <View key={i} style={[styles.flag, { backgroundColor: s.bg }]}>
               <Ionicons name={s.icon} size={18} color={s.color} />
               <Text style={[styles.text, { flex: 1 }]}>
-                {f.condition !== 'general' && <Text style={{ fontWeight: '700', color: s.color }}>{f.condition.replace('-', ' ')}: </Text>}
+                {f.condition !== 'general' && <Text style={{ fontWeight: '700', color: s.color }}>{flagLabel(f.condition)}: </Text>}
                 {f.message}
               </Text>
             </View>
           );
         })}
+    </View>
+  );
+}
+
+/** Daily calorie budget: eaten so far, this meal, and what's left. */
+export function BudgetBar({ consumed, meal = 0, daily }: { consumed: number; meal?: number; daily: number }) {
+  const total = consumed + meal;
+  const over = total > daily;
+  const scale = Math.max(daily, total) || 1;
+  const left = daily - total;
+  return (
+    <View style={{ gap: space(2) }} accessibilityLabel={`${Math.round(total)} of ${daily} kilocalories`}>
+      <View style={styles.budgetTrack}>
+        <View style={{ width: `${(consumed / scale) * 100}%`, backgroundColor: colors.primary }} />
+        {meal > 0 && <View style={{ width: `${(meal / scale) * 100}%`, backgroundColor: over ? colors.danger : colors.accent, marginLeft: consumed > 0 ? 2 : 0 }} />}
+      </View>
+      <View style={styles.budgetLegend}>
+        <LegendDot color={colors.primary} label={`Eaten ${Math.round(consumed)}`} />
+        {meal > 0 && <LegendDot color={over ? colors.danger : colors.accent} label={`This meal ${Math.round(meal)}`} />}
+        <Text style={[styles.budgetLeft, over && { color: colors.danger }]}>
+          {over ? `${Math.round(-left)} kcal over` : `${Math.round(left)} of ${daily} kcal left`}
+        </Text>
+      </View>
+    </View>
+  );
+}
+
+function LegendDot({ color, label }: { color: string; label: string }) {
+  return (
+    <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
+      <View style={{ width: 10, height: 10, borderRadius: 5, backgroundColor: color }} />
+      <Text style={styles.legendText}>{label}</Text>
     </View>
   );
 }
@@ -137,5 +187,9 @@ const styles = StyleSheet.create({
   barRef: { fontSize: 12, fontWeight: '500', color: colors.textMuted },
   barTrack: { height: 10, borderRadius: 5, backgroundColor: colors.surfaceAlt, overflow: 'hidden' },
   barFill: { height: '100%', borderRadius: 5 },
+  budgetTrack: { height: 14, borderRadius: 7, backgroundColor: colors.surfaceAlt, overflow: 'hidden', flexDirection: 'row' },
+  budgetLegend: { flexDirection: 'row', flexWrap: 'wrap', gap: space(3), alignItems: 'center' },
+  budgetLeft: { marginLeft: 'auto', fontSize: 14, fontWeight: '800', color: colors.text },
+  legendText: { fontSize: 12, color: colors.textMuted, fontWeight: '600' },
   flag: { flexDirection: 'row', gap: space(2), padding: space(3), borderRadius: radius.md, alignItems: 'flex-start' },
 });

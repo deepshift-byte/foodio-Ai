@@ -22,6 +22,7 @@ function aiItem(foodId: string | null, grams: number, plateFraction: number, gro
     preparation: 'cooked',
     confidence: 0.9,
     group,
+    hiddenAdditions: { saltMg: 0, oilG: 0, sugarG: 0 },
     estimatedPer100g: { kcal: 100, carbs: 10, protein: 5, fat: 3, fiber: 1, sodiumMg: 50 },
   };
 }
@@ -93,6 +94,7 @@ describe('health rules', () => {
     confidence: 1,
     group: FOOD_BY_ID[foodId].group,
     nutrients: nutrientsFor(foodId, grams)!,
+    hidden: { saltMg: 0, oilG: 0, sugarG: 0 },
   });
 
   it('warns a diabetic about a big posho plate with sugary tea', () => {

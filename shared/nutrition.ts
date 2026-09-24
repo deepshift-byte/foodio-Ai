@@ -1,6 +1,10 @@
 import { FOOD_BY_ID } from './foods';
+import { latestWeight, maintenanceKcal, weightPlan } from './weight';
 import type {
   Allergy,
+  CalorieBudget,
+  DietPlan,
+  EatingContext,
   FoodGroup,
   FoodTag,
   HealthFlag,
@@ -87,10 +91,17 @@ type Target = Partial<Record<FoodGroup, number>>;
 /** Recommended plate proportions for this person (a "healthy plate" model). */
 export function targetPlate(profile?: HealthProfile): Target {
   const c = new Set(profile?.conditions ?? []);
+  const diets = new Set(profile?.dietPlans ?? []);
+  if (c.has('kidney-disease')) return { vegetable: 0.45, starch: 0.3, protein: 0.2, fruit: 0.05 };
+  if (c.has('cancer') && profile?.cancerCare?.phase === 'in-treatment') {
+    return { vegetable: 0.35, protein: 0.3, starch: 0.3, fruit: 0.05 };
+  }
+  if (diets.has('keto') && !c.has('pregnancy')) return { vegetable: 0.55, protein: 0.3, fat: 0.15 };
+  if (diets.has('low-carb')) return { vegetable: 0.5, protein: 0.3, starch: 0.15, fat: 0.05 };
+  if (diets.has('high-protein')) return { vegetable: 0.4, protein: 0.35, starch: 0.2, fruit: 0.05 };
   if (c.has('diabetes') || c.has('prediabetes') || c.has('weight-loss') || profile?.goal === 'lose') {
     return { vegetable: 0.5, protein: 0.25, starch: 0.25 };
   }
-  if (c.has('kidney-disease')) return { vegetable: 0.45, starch: 0.3, protein: 0.2, fruit: 0.05 };
   if (c.has('pregnancy') || c.has('anemia')) return { vegetable: 0.4, protein: 0.3, starch: 0.25, fruit: 0.05 };
   if (profile?.goal === 'gain' || profile?.goal === 'muscle') {
     return { vegetable: 0.35, protein: 0.3, starch: 0.3, fruit: 0.05 };
@@ -105,7 +116,7 @@ export function balanceScore(shares: Record<FoodGroup, number>, profile?: Health
   for (const g of FOOD_GROUPS) {
     const want = target[g] ?? 0;
     // Healthy fats and dairy in small amounts are fine; don't penalise < 10%.
-    const have = g === 'fat' || g === 'dairy' ? Math.max(0, shares[g] - 0.1) : shares[g];
+    const have = (g === 'fat' || g === 'dairy') && !(target[g] ?? 0) ? Math.max(0, shares[g] - 0.1) : shares[g];
     distance += Math.abs(have - want);
   }
   // distance ranges 0..2; add an extra penalty for sugary food.
@@ -118,17 +129,55 @@ export function missingGroups(shares: Record<FoodGroup, number>, profile?: Healt
   return (Object.keys(target) as FoodGroup[]).filter((g) => (target[g] ?? 0) >= 0.1 && shares[g] < 0.05);
 }
 
-/** Estimated daily energy need (Mifflin–St Jeor), falling back to 2000 kcal. */
-export function dailyKcal(profile?: HealthProfile): number {
-  if (!profile?.weightKg || !profile.heightCm || !profile.age) return 2000;
-  const s = profile.sex === 'male' ? 5 : profile.sex === 'female' ? -161 : -78;
-  const bmr = 10 * profile.weightKg + 6.25 * profile.heightCm - 5 * profile.age + s;
-  const factor = profile.activity === 'high' ? 1.725 : profile.activity === 'moderate' ? 1.55 : 1.375;
-  let kcal = bmr * factor;
+/**
+ * Daily calorie target: from the weight plan when the person has a weight
+ * goal, otherwise maintenance adjusted for their general goal.
+ */
+export function dailyKcal(profile?: HealthProfile, currentWeightKg?: number): number {
+  if (!profile) return 2000;
+  const current = currentWeightKg ?? latestWeight([], profile);
+  if (profile.weightGoal && current) {
+    const plan = weightPlan(profile, current);
+    if (plan) return plan.dailyKcal;
+  }
+  if (!profile.weightKg || !profile.heightCm || !profile.age) return 2000;
+  let kcal = maintenanceKcal(profile, current);
   if (profile.goal === 'lose' || profile.conditions.includes('weight-loss')) kcal -= 500;
   if (profile.goal === 'gain' || profile.goal === 'muscle') kcal += 300;
   if (profile.conditions.includes('pregnancy')) kcal += 340;
   return Math.max(1200, Math.round(kcal / 10) * 10);
+}
+
+export function calorieBudget(mealKcal: number, profile?: HealthProfile, context?: EatingContext): CalorieBudget {
+  const daily = dailyKcal(profile, context?.currentWeightKg);
+  const before = Math.round(context?.todayKcal ?? 0);
+  const after = before + Math.round(mealKcal);
+  return { dailyKcal: daily, consumedBefore: before, afterMeal: after, remaining: daily - after };
+}
+
+export const DIET_LABELS: Record<DietPlan, string> = {
+  keto: 'Keto',
+  'low-carb': 'Low-carb',
+  'intermittent-fasting': 'Intermittent fasting',
+  mediterranean: 'Mediterranean',
+  dash: 'DASH (low salt)',
+  vegetarian: 'Vegetarian',
+  vegan: 'Vegan',
+  'high-protein': 'High-protein',
+};
+
+/** Is "HH:MM" inside the eating window? */
+export function inEatingWindow(localTime: string, startHour: number, hours: number): boolean {
+  const [h, m] = localTime.split(':').map(Number);
+  if (!Number.isFinite(h)) return true;
+  const minutes = h * 60 + (m || 0);
+  const start = startHour * 60;
+  const end = start + hours * 60;
+  return end <= 1440 ? minutes >= start && minutes < end : minutes >= start || minutes < end - 1440;
+}
+
+export function formatHour(h: number): string {
+  return `${String(((h % 24) + 24) % 24).padStart(2, '0')}:00`;
 }
 
 export function idealPlate(profile?: HealthProfile): PlateSection[] {
@@ -139,10 +188,14 @@ export function idealPlate(profile?: HealthProfile): PlateSection[] {
     vegetable: ['Dodo', 'Nakati', 'Sukuma wiki', 'Cabbage', 'Kachumbari'],
     protein: c.has('kidney-disease')
       ? ['Small portion of fish', 'Egg']
+      : profile?.dietPlans?.includes('vegan')
+      ? ['Beans', 'Peas', 'Groundnut sauce', 'Mushrooms']
+      : profile?.dietPlans?.includes('vegetarian')
+      ? ['Beans', 'Peas', 'Eggs', 'Groundnut sauce']
       : ['Beans', 'Peas', 'Tilapia', 'Chicken', c.has('pregnancy') || c.has('anemia') ? 'Mukene' : 'Groundnut sauce'],
-    starch: lowGi ? ['Millet (kalo)', 'Sweet potato', 'Yam', 'Small matooke'] : ['Matooke', 'Kalo', 'Sweet potato', 'Brown rice'],
+    starch: profile?.dietPlans?.includes('low-carb') ? ['Small sweet potato', 'Small kalo'] : lowGi ? ['Millet (kalo)', 'Sweet potato', 'Yam', 'Small matooke'] : ['Matooke', 'Kalo', 'Sweet potato', 'Brown rice'],
     fruit: ['Pawpaw', 'Orange', 'Passion fruit'],
-    fat: ['Avocado'],
+    fat: profile?.allergies.includes('peanut') ? ['Avocado'] : ['Avocado', 'Roasted groundnuts'],
     dairy: ['Milk'],
     sugary: [],
   };
@@ -170,8 +223,11 @@ function itemGi(item: MealItem) {
   return item.foodId && FOOD_BY_ID[item.foodId] ? FOOD_BY_ID[item.foodId].gi : undefined;
 }
 
-/** Rule-based checks of a meal against the person's conditions and allergies. */
-export function healthFlags(items: MealItem[], profile?: HealthProfile): HealthFlag[] {
+/**
+ * Rule-based checks of a meal against the person's conditions, allergies,
+ * diet plans, weight goal and what they have already eaten today.
+ */
+export function healthFlags(items: MealItem[], profile?: HealthProfile, context?: EatingContext): HealthFlag[] {
   const flags: HealthFlag[] = [];
   const totals = sumNutrients(items);
   const shares = groupShares(items);
@@ -202,7 +258,9 @@ export function healthFlags(items: MealItem[], profile?: HealthProfile): HealthF
     if (highGi.length && shares.starch > 0.3) {
       flags.push({ severity: 'warning', condition: cond, message: `High-GI starch (${list(highGi)}) makes up a large part of the plate and can spike blood sugar.` });
     }
-    const sugary = items.filter((it) => it.group === 'sugary' || itemTags(it).includes('added-sugar')).map((it) => it.name);
+    const sugary = items
+      .filter((it) => it.group === 'sugary' || itemTags(it).includes('added-sugar') || it.hidden.sugarG >= 4)
+      .map((it) => it.name);
     if (sugary.length) {
       flags.push({ severity: c.has('diabetes') ? 'danger' : 'warning', condition: cond, message: `Added sugar in ${list(sugary)}.` });
     }
@@ -217,8 +275,8 @@ export function healthFlags(items: MealItem[], profile?: HealthProfile): HealthF
     } else if (totals.sodiumMg > 800) {
       flags.push({ severity: 'warning', condition: 'hypertension', message: `Roughly ${totals.sodiumMg} mg sodium — try to keep meals under 700 mg.` });
     }
-    const salty = withTag('high-sodium');
-    if (salty.length) flags.push({ severity: 'warning', condition: 'hypertension', message: `Salty foods: ${list(salty)}.` });
+    const salty = [...new Set([...withTag('high-sodium'), ...items.filter((it) => it.hidden.saltMg >= 200).map((it) => it.name)])];
+    if (salty.length) flags.push({ severity: 'warning', condition: 'hypertension', message: `Salty foods (including added salt or stock cubes): ${list(salty)}.` });
   }
 
   if (c.has('high-cholesterol')) {
@@ -258,9 +316,28 @@ export function healthFlags(items: MealItem[], profile?: HealthProfile): HealthF
     if (tea.length) flags.push({ severity: 'info', condition: cond, message: 'Tea with meals reduces iron absorption — drink it an hour later.' });
   }
 
-  const mealKcal = dailyKcal(profile) / 3;
-  if ((c.has('weight-loss') || profile?.goal === 'lose') && totals.kcal > mealKcal * 1.15) {
-    flags.push({ severity: 'warning', condition: 'weight-loss', message: `About ${totals.kcal} kcal — above your ~${Math.round(mealKcal)} kcal per-meal target.` });
+  flags.push(...dietFlags(items, totals, profile, context));
+  flags.push(...cancerFlags(items, totals, profile));
+
+  // Calorie budget (weight goal or general weight-loss goal).
+  const losing = Boolean(profile?.weightGoal && profile.weightGoal.targetWeightKg < profile.weightGoal.startWeightKg) || c.has('weight-loss') || profile?.goal === 'lose';
+  if (losing && totals.kcal > 0) {
+    const budget = calorieBudget(totals.kcal, profile, context);
+    if (budget.remaining < -Math.max(100, budget.dailyKcal * 0.05)) {
+      flags.push({
+        severity: 'warning',
+        condition: 'weight-goal',
+        message: `This meal takes you to about ${budget.afterMeal} of your ${budget.dailyKcal} kcal for today — ${-budget.remaining} kcal over. Eat a smaller portion or save part of it.`,
+      });
+    } else if (totals.kcal > budget.dailyKcal * 0.45) {
+      flags.push({
+        severity: 'warning',
+        condition: 'weight-goal',
+        message: `About ${totals.kcal} kcal is a big share of your ${budget.dailyKcal} kcal day. Reduce the starch or oil.`,
+      });
+    }
+    const fried = [...new Set([...withTag('fried'), ...items.filter((it) => it.hidden.oilG >= 10).map((it) => it.name)])];
+    if (fried.length) flags.push({ severity: 'info', condition: 'weight-goal', message: `Oil adds calories fast (1 tablespoon ≈ 120 kcal): ${list(fried)}.` });
   }
 
   if (shares.vegetable < 0.05 && items.length > 0) {
@@ -281,4 +358,106 @@ export function ruleVerdict(flags: HealthFlag[], score: number): Verdict {
 /** Combine the AI's verdict with the rule verdict, keeping the stricter one. */
 export function stricterVerdict(a: Verdict, b: Verdict): Verdict {
   return VERDICT_RANK[a] >= VERDICT_RANK[b] ? a : b;
+}
+
+function dietFlags(items: MealItem[], totals: NutrientsPer100g, profile?: HealthProfile, context?: EatingContext): HealthFlag[] {
+  const flags: HealthFlag[] = [];
+  const diets = new Set(profile?.dietPlans ?? []);
+  const withTag = (tag: FoodTag) => items.filter((it) => itemTags(it).includes(tag)).map((it) => it.name);
+  const list = (names: string[]) => [...new Set(names)].join(', ');
+  const starches = items.filter((it) => it.group === 'starch' || it.group === 'sugary').map((it) => it.name);
+
+  // Keto and low-carb targets count net carbs (total carbs minus fibre).
+  const netCarbs = Math.max(0, totals.carbs - totals.fiber);
+  if (diets.has('keto')) {
+    if (netCarbs > 40) {
+      flags.push({ severity: 'danger', condition: 'keto', message: `About ${Math.round(netCarbs)} g of net carbs — this will break ketosis (keto is usually 20–50 g for the whole day). Carb sources: ${list(starches) || 'sauces or fruit'}.` });
+    } else if (netCarbs > 15) {
+      flags.push({ severity: 'warning', condition: 'keto', message: `About ${Math.round(netCarbs)} g of net carbs — high for one keto meal (aim for under 15 g).` });
+    }
+    const todayCarbs = (context?.todayCarbs ?? 0) + netCarbs;
+    if (todayCarbs > 50 && netCarbs <= 40) {
+      flags.push({ severity: 'warning', condition: 'keto', message: `With this meal you'll be at about ${Math.round(todayCarbs)} g of carbs today — over a typical keto limit.` });
+    }
+    if (profile?.conditions.includes('diabetes')) {
+      flags.push({ severity: 'info', condition: 'keto', message: 'Keto with diabetes medicines (especially insulin or SGLT2 inhibitors) needs your doctor’s supervision.' });
+    }
+    if (profile?.conditions.includes('pregnancy')) {
+      flags.push({ severity: 'warning', condition: 'keto', message: 'Keto diets are not recommended during pregnancy.' });
+    }
+  } else if (diets.has('low-carb') && netCarbs > 40) {
+    flags.push({ severity: 'warning', condition: 'low-carb', message: `About ${Math.round(netCarbs)} g of net carbs — above a low-carb meal target of about 30–40 g.` });
+  }
+
+  if (diets.has('intermittent-fasting') && context?.localTime && totals.kcal > 15) {
+    const w = profile?.fastingWindow ?? { startHour: 12, hours: 8 };
+    if (!inEatingWindow(context.localTime, w.startHour, w.hours)) {
+      flags.push({
+        severity: 'warning',
+        condition: 'intermittent-fasting',
+        message: `It's ${context.localTime} — you're in your fasting period (eating window ${formatHour(w.startHour)}–${formatHour(w.startHour + w.hours)}). Water, black tea or black coffee without sugar won't break your fast.`,
+      });
+    }
+  }
+
+  if (diets.has('vegan')) {
+    const animal = [...withTag('contains-meat'), ...withTag('contains-fish'), ...withTag('contains-egg'), ...withTag('contains-dairy')];
+    if (animal.length) flags.push({ severity: 'danger', condition: 'vegan', message: `Not vegan: ${list(animal)}.` });
+  } else if (diets.has('vegetarian')) {
+    const meat = [...withTag('contains-meat'), ...withTag('contains-fish')];
+    if (meat.length) flags.push({ severity: 'danger', condition: 'vegetarian', message: `Not vegetarian: ${list(meat)}.` });
+  }
+
+  if (diets.has('dash') && totals.sodiumMg > 600) {
+    flags.push({ severity: 'warning', condition: 'dash', message: `Roughly ${totals.sodiumMg} mg sodium — DASH meals aim for about 500 mg or less.` });
+  }
+
+  if (diets.has('mediterranean')) {
+    const heavy = [...withTag('fried'), ...withTag('high-sat-fat'), ...withTag('red-meat')];
+    if (heavy.length) flags.push({ severity: 'info', condition: 'mediterranean', message: `Mediterranean eating favours fish, beans and vegetables over fried food and red meat: ${list(heavy)}.` });
+  }
+
+  if (diets.has('high-protein') && totals.protein < 25 && totals.kcal > 250) {
+    flags.push({ severity: 'info', condition: 'high-protein', message: `Only about ${Math.round(totals.protein)} g protein — add beans, eggs, fish or chicken to reach 25–40 g.` });
+  }
+  return flags;
+}
+
+function cancerFlags(items: MealItem[], totals: NutrientsPer100g, profile?: HealthProfile): HealthFlag[] {
+  if (!profile?.conditions.includes('cancer')) return [];
+  const flags: HealthFlag[] = [];
+  const care = profile.cancerCare;
+  const symptoms = new Set(care?.symptoms ?? []);
+  const withTag = (tag: FoodTag) => items.filter((it) => itemTags(it).includes(tag)).map((it) => it.name);
+  const list = (names: string[]) => [...new Set(names)].join(', ');
+
+  if (symptoms.has('low-immunity')) {
+    const raw = [...withTag('raw'), ...items.filter((it) => /\b(raw|rare|undercooked|unwashed)\b/i.test(it.preparation)).map((it) => it.name)];
+    if (raw.length) {
+      flags.push({ severity: 'warning', condition: 'food-safety', message: `With low immunity, raw or undercooked foods carry infection risk: ${list(raw)}. Eat freshly cooked food; wash and peel fruit; follow your care team's advice.` });
+    }
+  }
+  if (symptoms.has('mouth-sores')) {
+    const acidic = withTag('acidic-spicy');
+    if (acidic.length) flags.push({ severity: 'info', condition: 'cancer', message: `Acidic or spicy foods can sting mouth sores: ${list(acidic)}. Soft, moist foods like mashed matooke, porridge and soups are easier.` });
+  }
+  if (symptoms.has('nausea')) {
+    const greasy = withTag('fried');
+    if (greasy.length || totals.fat > 30) flags.push({ severity: 'info', condition: 'cancer', message: 'Greasy food can worsen nausea — try small, plain meals and sip fluids between meals.' });
+  }
+  if (symptoms.has('low-appetite') || symptoms.has('unintended-weight-loss') || care?.phase === 'in-treatment') {
+    if (totals.protein < 20 && totals.kcal > 0) {
+      flags.push({ severity: 'info', condition: 'cancer', message: `Only about ${Math.round(totals.protein)} g protein. Protein helps your body recover — add eggs, milk, beans, g-nut sauce, fish or chicken.` });
+    }
+    if ((symptoms.has('low-appetite') || symptoms.has('unintended-weight-loss')) && totals.kcal < 400 && totals.kcal > 0) {
+      flags.push({ severity: 'info', condition: 'cancer', message: 'A small meal — if you are losing weight without trying, add energy: avocado, g-nut paste, whole milk or an extra snack.' });
+    }
+  }
+  const processedOrGrilled = items.filter((it) => itemTags(it).includes('processed') || (itemTags(it).includes('red-meat') && /grill|char|roast|muchomo/i.test(`${it.preparation} ${it.name}`)));
+  if (processedOrGrilled.length) {
+    flags.push({ severity: 'info', condition: 'cancer', message: `Cancer-prevention guidance is to limit red, charred and processed meat: ${list(processedOrGrilled.map((i) => i.name))}.` });
+  }
+  const sugary = items.filter((it) => it.group === 'sugary').map((it) => it.name);
+  if (sugary.length) flags.push({ severity: 'info', condition: 'cancer', message: `Limit sugary foods and drinks: ${list(sugary)}.` });
+  return flags;
 }

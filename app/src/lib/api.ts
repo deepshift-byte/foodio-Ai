@@ -1,4 +1,4 @@
-import type { HealthProfile, MealAnalysis, RecipeResponse } from '@shared/types';
+import type { CoachAdvice, EatingContext, HealthProfile, MealAnalysis, RecipeResponse } from '@shared/types';
 
 export const API_URL = (process.env.EXPO_PUBLIC_API_URL ?? 'http://localhost:8787').replace(/\/$/, '');
 
@@ -21,8 +21,9 @@ async function post<T>(path: string, body: unknown): Promise<T> {
 }
 
 export function analyzeMeal(args: {
-  imageBase64: string;
+  imageBase64?: string;
   profile?: HealthProfile;
+  context?: EatingContext;
   note?: string;
   answers?: { question: string; answer: string }[];
 }) {
@@ -34,6 +35,17 @@ export function getRecipes(args: {
   dish?: string;
   mealType?: string;
   profile?: HealthProfile;
+  context?: EatingContext;
 }) {
   return post<RecipeResponse>('/api/recipes', args);
+}
+
+export function getCoachAdvice(args: {
+  profile?: HealthProfile;
+  context?: EatingContext;
+  todaysMeals: { name: string; kcal: number; carbs: number; protein: number; time: string }[];
+  recentDays: { date: string; kcal: number }[];
+  question?: string;
+}) {
+  return post<CoachAdvice>('/api/coach', args);
 }

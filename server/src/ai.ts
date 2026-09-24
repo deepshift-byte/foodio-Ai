@@ -1,9 +1,18 @@
 import Anthropic from '@anthropic-ai/sdk';
 import { betaZodOutputFormat } from '@anthropic-ai/sdk/helpers/beta/zod';
 import type { z } from 'zod';
-import type { HealthProfile } from '../../shared/types';
-import { ANALYZE_SYSTEM, RECIPE_SYSTEM } from './prompts';
-import { aiMealSchema, aiRecipesSchema, type AiMeal, type AiRecipes } from './schemas';
+import { dailyKcal, DIET_LABELS, formatHour } from '../../shared/nutrition';
+import type { EatingContext, HealthProfile } from '../../shared/types';
+import { weightPlan } from '../../shared/weight';
+import { ANALYZE_SYSTEM, COACH_SYSTEM, RECIPE_SYSTEM } from './prompts';
+import {
+  aiCoachSchema,
+  aiMealSchema,
+  aiRecipesSchema,
+  type AiCoach,
+  type AiMeal,
+  type AiRecipes,
+} from './schemas';
 import type { ClassifierHint } from './classifier';
 
 const MODEL = process.env.FOODIO_MODEL || 'claude-opus-5';
@@ -17,9 +26,38 @@ function anthropic() {
 export class AiRefusalError extends Error {}
 export class AiOutputError extends Error {}
 
-function describeProfile(profile?: HealthProfile) {
+function describeProfile(profile?: HealthProfile, context?: EatingContext) {
   if (!profile) return 'No health profile provided — give general healthy-eating advice.';
-  return `Person's health profile (JSON):\n${JSON.stringify(profile, null, 2)}`;
+  const lines = [`Person's health profile (JSON):\n${JSON.stringify(profile, null, 2)}`];
+  if (profile.dietPlans?.length) {
+    lines.push(`Diet plans: ${profile.dietPlans.map((d) => DIET_LABELS[d]).join(', ')}.`);
+  }
+  if (profile.dietPlans?.includes('intermittent-fasting')) {
+    const w = profile.fastingWindow ?? { startHour: 12, hours: 8 };
+    lines.push(`Eating window: ${formatHour(w.startHour)}–${formatHour(w.startHour + w.hours)} (${24 - w.hours}:${w.hours} fasting).`);
+  }
+  const current = context?.currentWeightKg ?? profile.weightGoal?.startWeightKg ?? profile.weightKg;
+  const plan = current ? weightPlan(profile, current) : null;
+  if (plan) {
+    lines.push(
+      `Weight goal: ${plan.currentKg} kg now → ${plan.targetKg} kg by ${profile.weightGoal!.targetDate} (${plan.kgToGo} kg to go, safe pace ${plan.safeWeeklyKg} kg/week). Daily calorie budget: ${plan.dailyKcal} kcal.` +
+        (plan.warnings.length ? ` Notes: ${plan.warnings.join(' ')}` : ''),
+    );
+  }
+  return lines.join('\n');
+}
+
+function describeContext(profile?: HealthProfile, context?: EatingContext) {
+  if (!context) return '';
+  const parts: string[] = [];
+  if (context.localTime) parts.push(`Local time now: ${context.localTime}.`);
+  if (context.todayKcal !== undefined) {
+    const budget = dailyKcal(profile, context.currentWeightKg);
+    parts.push(
+      `Already eaten today: about ${Math.round(context.todayKcal)} kcal and ${Math.round(context.todayCarbs ?? 0)} g carbs in ${context.mealsToday ?? 0} meal(s). Daily budget ${budget} kcal, so about ${Math.round(budget - context.todayKcal)} kcal remain before this meal.`,
+    );
+  }
+  return parts.join(' ');
 }
 
 async function structured<T extends z.ZodType>(
@@ -49,16 +87,21 @@ async function structured<T extends z.ZodType>(
   return response.parsed_output as z.infer<T>;
 }
 
-export async function analyzeMealImage(args: {
-  imageBase64: string;
+export async function analyzeMeal(args: {
+  imageBase64?: string;
   mediaType: 'image/jpeg' | 'image/png' | 'image/webp';
   profile?: HealthProfile;
+  context?: EatingContext;
   note?: string;
   answers?: { question: string; answer: string }[];
   hints?: ClassifierHint[];
 }): Promise<AiMeal> {
-  const parts: string[] = [describeProfile(args.profile)];
-  if (args.note) parts.push(`The person says about this meal: "${args.note}"`);
+  const parts: string[] = [describeProfile(args.profile, args.context)];
+  const ctx = describeContext(args.profile, args.context);
+  if (ctx) parts.push(ctx);
+  if (args.note) {
+    parts.push(args.imageBase64 ? `The person says about this meal: "${args.note}"` : `The person describes the meal they are about to eat: "${args.note}"`);
+  }
   if (args.hints?.length) {
     parts.push(
       `A food-image classifier trained on African dishes suggests (label: probability): ${args.hints
@@ -73,12 +116,14 @@ export async function analyzeMealImage(args: {
         .join('\n')}`,
     );
   }
-  parts.push('Analyse this meal photo.');
+  parts.push(args.imageBase64 ? 'Analyse this meal photo. Is it a good choice for this person right now?' : 'Analyse this described meal. Is it a good choice for this person right now?');
 
-  return structured(aiMealSchema, ANALYZE_SYSTEM, [
-    { type: 'image', source: { type: 'base64', media_type: args.mediaType, data: args.imageBase64 } },
-    { type: 'text', text: parts.join('\n\n') },
-  ]);
+  const content: Anthropic.Beta.BetaContentBlockParam[] = [];
+  if (args.imageBase64) {
+    content.push({ type: 'image', source: { type: 'base64', media_type: args.mediaType, data: args.imageBase64 } });
+  }
+  content.push({ type: 'text', text: parts.join('\n\n') });
+  return structured(aiMealSchema, ANALYZE_SYSTEM, content);
 }
 
 export async function suggestRecipes(args: {
@@ -86,10 +131,35 @@ export async function suggestRecipes(args: {
   dish?: string;
   mealType: string;
   profile?: HealthProfile;
+  context?: EatingContext;
 }): Promise<AiRecipes> {
-  const parts = [describeProfile(args.profile)];
+  const parts = [describeProfile(args.profile, args.context)];
+  const ctx = describeContext(args.profile, args.context);
+  if (ctx) parts.push(ctx);
   if (args.dish) parts.push(`They want to cook: ${args.dish}`);
   if (args.ingredients.length) parts.push(`Ingredients they have: ${args.ingredients.join(', ')}`);
   parts.push(`Meal: ${args.mealType}. Suggest healthy meal ideas.`);
   return structured(aiRecipesSchema, RECIPE_SYSTEM, [{ type: 'text', text: parts.join('\n\n') }]);
+}
+
+export async function coach(args: {
+  profile?: HealthProfile;
+  context?: EatingContext;
+  todaysMeals: { name: string; kcal: number; carbs: number; protein: number; time: string }[];
+  recentDays: { date: string; kcal: number }[];
+  question?: string;
+}): Promise<AiCoach> {
+  const parts = [describeProfile(args.profile, args.context)];
+  const ctx = describeContext(args.profile, args.context);
+  if (ctx) parts.push(ctx);
+  parts.push(
+    args.todaysMeals.length
+      ? `Meals eaten today:\n${args.todaysMeals.map((m) => `- ${m.time} ${m.name}: ${Math.round(m.kcal)} kcal, ${Math.round(m.carbs)} g carbs, ${Math.round(m.protein)} g protein`).join('\n')}`
+      : 'No meals logged yet today.',
+  );
+  if (args.recentDays.length) {
+    parts.push(`Recent days (kcal): ${args.recentDays.map((d) => `${d.date}: ${Math.round(d.kcal)}`).join(', ')}`);
+  }
+  if (args.question) parts.push(`Their question: "${args.question}"`);
+  return structured(aiCoachSchema, COACH_SYSTEM, [{ type: 'text', text: parts.join('\n\n') }]);
 }

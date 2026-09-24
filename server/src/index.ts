@@ -4,10 +4,10 @@ import cors from 'cors';
 import express, { type NextFunction, type Request, type Response } from 'express';
 import { ZodError } from 'zod';
 import { FOODS } from '../../shared/foods';
-import { AiOutputError, AiRefusalError, analyzeMealImage, suggestRecipes } from './ai';
+import { AiOutputError, AiRefusalError, analyzeMeal, coach, suggestRecipes } from './ai';
 import { buildAnalysis } from './analysis';
 import { classifyImage } from './classifier';
-import { analyzeRequestSchema, recipeRequestSchema } from './schemas';
+import { analyzeRequestSchema, coachRequestSchema, recipeRequestSchema } from './schemas';
 
 const app = express();
 app.use(cors());
@@ -23,9 +23,13 @@ app.get('/api/foods', (_req, res) => {
 
 app.post('/api/analyze', async (req, res) => {
   const body = analyzeRequestSchema.parse(req.body);
-  const hints = await classifyImage(body.imageBase64);
-  const ai = await analyzeMealImage({ ...body, hints });
-  res.json(buildAnalysis(ai, body.profile));
+  if (!body.imageBase64 && !body.note?.trim()) {
+    res.status(400).json({ error: 'Send a meal photo or describe the meal.' });
+    return;
+  }
+  const hints = body.imageBase64 ? await classifyImage(body.imageBase64) : [];
+  const ai = await analyzeMeal({ ...body, hints });
+  res.json(buildAnalysis(ai, body.profile, body.context, Boolean(body.imageBase64)));
 });
 
 app.post('/api/recipes', async (req, res) => {
@@ -35,6 +39,11 @@ app.post('/api/recipes', async (req, res) => {
     return;
   }
   res.json(await suggestRecipes(body));
+});
+
+app.post('/api/coach', async (req, res) => {
+  const body = coachRequestSchema.parse(req.body);
+  res.json(await coach(body));
 });
 
 app.use((err: unknown, _req: Request, res: Response, _next: NextFunction) => {
