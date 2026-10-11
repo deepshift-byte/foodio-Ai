@@ -26,6 +26,9 @@
       "predictiveBackGestureEnabled": false,
       "permissions": [
         "android.permission.CAMERA"
+      ],
+      "blockedPermissions": [
+        "android.permission.RECORD_AUDIO"
       ]
     },
     "web": {
@@ -42,7 +45,8 @@
         "expo-image-picker",
         {
           "cameraPermission": "Foodio uses the camera to photograph your meals for nutrition analysis.",
-          "photosPermission": "Foodio lets you choose meal photos from your library for analysis."
+          "photosPermission": "Foodio lets you choose meal photos from your library for analysis.",
+          "microphonePermission": false
         }
       ]
     ],
