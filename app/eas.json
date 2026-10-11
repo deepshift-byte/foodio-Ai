@@ -9,13 +9,13 @@
         "buildType": "apk"
       },
       "env": {
-        "EXPO_PUBLIC_API_URL": "https://YOUR-FOODIO-API.example.com"
+        "EXPO_PUBLIC_API_URL": "https://foodio-api.onrender.com"
       }
     },
     "production": {
       "autoIncrement": true,
       "env": {
-        "EXPO_PUBLIC_API_URL": "https://YOUR-FOODIO-API.example.com"
+        "EXPO_PUBLIC_API_URL": "https://foodio-api.onrender.com"
       }
     }
   },
