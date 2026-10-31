@@ -6,11 +6,9 @@ import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.test.assertExists
 import androidx.compose.ui.test.click
 import androidx.compose.ui.test.hasStateDescription
 import androidx.compose.ui.test.junit4.createComposeRule
-import androidx.compose.ui.test.onNode
 import androidx.compose.ui.test.performTouchInput
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.sandpause.app.ui.child.Hourglass
@@ -104,7 +102,7 @@ class HourglassStateTransitionTest {
     }
 
     private fun assertMood(mood: Mood) {
-        rule.onNode(hasStateDescription(mood.name)).assertExists()
+        rule.onNode(hasStateDescription(mood.name)).fetchSemanticsNode()
     }
 }
 
