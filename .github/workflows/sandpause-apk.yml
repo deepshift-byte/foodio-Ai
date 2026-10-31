@@ -50,10 +50,12 @@ jobs:
           "$SDKM" "platforms;android-36" "build-tools;36.0.0" "platform-tools"
 
       - name: Unit tests (core logic)
-        run: ./gradlew :core:test --no-daemon
+        timeout-minutes: 15
+        run: ./gradlew :core:test --no-daemon --console=plain --stacktrace
 
       - name: Build debug APK and compile instrumented tests
-        run: ./gradlew :app:assembleDebug :app:assembleDebugAndroidTest --no-daemon
+        timeout-minutes: 25
+        run: ./gradlew :app:assembleDebug :app:assembleDebugAndroidTest --no-daemon --console=plain --stacktrace
 
       - name: Show APK size
         run: ls -lh app/build/outputs/apk/debug/*.apk
