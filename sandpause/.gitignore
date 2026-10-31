@@ -1,0 +1,21 @@
+# Gradle and build output
+.gradle/
+build/
+**/build/
+*.apk
+*.aab
+!gradle/wrapper/gradle-wrapper.jar
+
+# Local machine files
+local.properties
+*.iml
+.idea/
+.DS_Store
+captures/
+.externalNativeBuild/
+.cxx/
+
+# Signing material must never be committed
+*.jks
+*.keystore
+keystore.properties

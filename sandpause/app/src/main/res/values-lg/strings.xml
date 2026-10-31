@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  TODO(native review): every Luganda string in this file is a machine-drafted placeholder.
+  A native speaker must review and correct them before release. Keys match values/strings.xml.
+-->
+<resources>
+    <string name="app_name">SandPause</string>
+    <!-- TODO(native review) -->
+    <string name="a11y_service_label">SandPause kuuma ekifo</string>
+    <string name="a11y_service_description">Elaba app eriko ku ssirini mu kiseera ky’okuzibwa, ekifo ky’okuzibwa kiddemu kulabika. Tesoma bigambo ku ssirini wadde okusindika data.</string>
+    <string name="admin_disable_warning">Okuggyako admin wa SandPause kyetaaga omuzadde. Okuzibwa kuddamu.</string>
+    <string name="channel_service_name">Okukuuma kwa SandPause</string>
+    <string name="notification_title">SandPause ekuuma essimu eno</string>
+    <string name="notification_active">Amateeka g’ekiseera ky’essimu gakola.</string>
+    <string name="notification_locked">Ekiseera ky’essimu kiyimiriddwa. Koona okuggulawo.</string>
+    <string name="data_budget_notice">Ensimbi za data z’olunaku zikozeseddwa.</string>
+
+    <!-- TODO(native review): setup -->
+    <string name="setup_step_count">Ekitundu %1$d ku %2$d</string>
+    <string name="setup_welcome_title">Tukwaniriza ku SandPause</string>
+    <string name="setup_welcome_body">SandPause eyamba ab’omu maka okuteekawo ekiseera ky’essimu ekirungi. Okusooka otonda PIN y’omuzadde, oluvannyuma olonde erinnya ly’omwana.</string>
+    <string name="setup_language">Olulimi lw’essirini ly’omwana</string>
+    <string name="setup_language_english">Lungereza</string>
+    <string name="setup_language_luganda">Luganda</string>
+    <string name="setup_name_title">Erinnya ly’omwana</string>
+    <string name="setup_name_hint">Lirabika ku ssirini ey’okuzibwa, ng’ekyokulabirako “Ekiseera ky’okuwummula kya Amara”.</string>
+    <string name="setup_child_name">Erinnya erisooka ery’omwana</string>
+    <string name="setup_pin_title">Tonda PIN y’omuzadde</string>
+    <string name="setup_pin_body">Kozesa emyuga 4 okutuuka ku 6. Omuzadde yekka amanye.</string>
+    <string name="setup_pin_confirm_title">Yingiza PIN nate</string>
+    <string name="setup_pin_confirm_body">Wandiika PIN y’emu okukakasa.</string>
+    <string name="setup_pin_confirm_label">Kakasa PIN</string>
+    <string name="setup_pin_mismatch">PIN ezo tezikwatagana. Gezaako nate.</string>
+    <string name="setup_recovery_title">Ekibuuzo ky’okuddaabiriza</string>
+    <string name="setup_recovery_body">Bw’onoobeera weerabidde PIN, ddamu ekibuuzo kino okuteekawo empya.</string>
+    <string name="setup_recovery_question">Ekibuuzo</string>
+    <string name="setup_recovery_question_example">Ng’ekyokulabirako: erinnya ly’essomero lyange erisooka?</string>
+    <string name="setup_recovery_answer">Eddibu</string>
+    <string name="setup_finish">Maliriza okuteekawo</string>
+
+    <!-- TODO(native review): PIN and gate -->
+    <string name="gate_title">Ekitundu ky’omuzadde</string>
+    <string name="gate_subtitle">Yingiza PIN yo okweyongerayo.</string>
+    <string name="gate_forgot">PIN wagyerabidde?</string>
+    <string name="gate_cooldown">Ogezezza emirundi mingi nnyo. Linda %1$s.</string>
+    <string name="gate_playstore_title">Okukebera omuzadde</string>
+    <string name="gate_playstore_body">Yingiza PIN y’omuzadde okuggulawo Play Store.</string>
+    <plurals name="gate_wrong_pin">
+        <item quantity="one">PIN etali yo. Okugezaako %d kukyasigadde.</item>
+        <item quantity="other">PIN etali yo. Okugezaako %d kusigadde.</item>
+    </plurals>
+    <string name="pin_prompt">Yingiza PIN yo</string>
+    <string name="pin_delete_label">⌫</string>
+    <string name="pin_delete_description">Ggyamu ennamba esembayo</string>
+    <string name="pin_submit_label">Kiri bulungi</string>
+    <string name="pin_submit_description">Kebera PIN</string>
+
+    <!-- TODO(native review): recovery -->
+    <string name="recovery_title">Ddamu PIN</string>
+    <string name="recovery_body">Ddamu ekibuuzo kyo eky’okuddaabiriza, oluvannyuma olonde PIN empya.</string>
+    <string name="recovery_question_label">Ekibuuzo: %1$s</string>
+    <string name="recovery_answer">Eddibu</string>
+    <string name="recovery_new_pin">PIN empya</string>
+    <string name="recovery_reset">Ddamu PIN</string>
+    <string name="recovery_wrong_answer">Eddibu eryo tuufu.</string>
+
+    <!-- TODO(native review): home -->
+    <string name="home_title">Essimu ya %1$s</string>
+    <string name="home_child_fallback">omwana wo</string>
+    <string name="home_status_title">Okukuumibwa</string>
+    <string name="home_mode_owner">Okuzibwa okujjuvu: embeera ya nnanyini kyuma</string>
+    <string name="home_mode_fallback">Okuzibwa okw’omutindo: embeera ya accessibility</string>
+    <string name="home_mode_missing">Tenamaliriza kuteekawo. Ggulawo Permissions.</string>
+    <string name="home_lock_running">Yazibiddwa: %1$s zisigadde</string>
+    <string name="home_end_lock">Maliriza okuzibwa kati</string>
+    <string name="home_no_lock">Tewali kuzibwa kukola.</string>
+    <string name="home_quick_lock">Okuzibwa mangu</string>
+    <string name="quick_minutes">Ddakiika %d</string>
+    <string name="custom_hours">Essaawa</string>
+    <string name="custom_minutes">Ddakiika</string>
+    <string name="start_lock">Tandika</string>
+    <string name="home_rewards">Ekiseera ky’empeera</string>
+    <string name="home_rewards_hint">Kyongera ekiseera ky’okuzibwa ekikola, oba ekiseera ky’olunaku.</string>
+    <string name="reward_minutes">+ddakiika %d</string>
+    <string name="home_allowance">Ekiseera ky’essimu ky’olunaku</string>
+    <string name="home_allowance_label">Ddakiika buli lunaku (0 = tekikola)</string>
+    <string name="home_allowance_hint">Ekiseera ky’olunaku bwe kiggwaako, essimu eyazibwa okutuuka ekiro.</string>
+    <string name="home_data_budget">Ensimbi ya data ya mobile</string>
+    <string name="home_data_budget_label">MB buli lunaku (0 = tekikola)</string>
+    <string name="home_data_budget_hint">Ensimbi bw’eggwaako, app ezikwatibwa nga za data nnyingi ziziyiyizibwa okutuuka enkya.</string>
+    <string name="home_play_store">Play Store</string>
+    <string name="home_play_store_pin">Yeetaaga PIN okuggulawo Play Store</string>
+    <string name="home_play_store_pin_hint">Omuzadde yingiza PIN buli Play Store bw’eggulwawo.</string>
+    <string name="home_contacts">Ssimu z’abazadde</string>
+    <string name="home_contacts_hint">Ennamba ssatu ze wayinza okukubira omwana mu kuzibwa. Ennamba z’obwetaavu zirina okusobola buli kiseera.</string>
+    <string name="contact_name">Erinnya</string>
+    <string name="contact_number">Ennamba ya ssimu</string>
+    <string name="contact_add">Gatta omuntu</string>
+    <string name="action_remove">Ggyawo</string>
+    <string name="home_suggestions">Ebirowoozo by’okuzannya</string>
+    <string name="home_suggestions_hint">Ekirowoozo kimu ku buli muzingo. Bikyuka buli ddakiika ssatu ku ssirini ey’okuzibwa. Leka nga tewali okukozesa ebyasooka.</string>
+    <string name="home_language">Olulimi</string>
+    <string name="home_more">Ebirala</string>
+    <string name="nav_schedules">Enteekateeka z’okuzibwa</string>
+    <string name="nav_apps">App ezikkirizibwa</string>
+    <string name="nav_reports">Lipoota</string>
+    <string name="nav_permissions">Okukkirizibwa</string>
+    <string name="nav_owner">Okuteekawo okuzibwa okujjuvu n’bbaatule</string>
+    <string name="home_debug_title">Okukebera</string>
+    <string name="home_fast_time">Ekiseera ekyanguyiddwa</string>
+    <string name="home_fast_time_hint">Ddakiika 1 = sekendi %1$d (ku debug builds zokka).</string>
+
+    <!-- TODO(native review): hourglass -->
+    <string name="hourglass_description_resting">Ssaaha ya musenyu. Omusenyu gukyagwa. Kuba okuwulira ekiseera ekisigadde.</string>
+    <string name="hourglass_description_impatient">Ssaaha ya musenyu. Begumiikiriza, omusenyu gukyagwa.</string>
+    <string name="hourglass_description_finished">Ssaaha ya musenyu. Yawedde. Essimu esobola okukozesebwa kati.</string>
+
+    <!-- TODO(native review): child lock screen -->
+    <string name="child_resting_for">Ekiseera ky’okuwummula kya %1$s</string>
+    <string name="child_emergency">Obwetaavu obw’amangu</string>
+    <string name="child_emergency_title">Obwetaavu obw’amangu</string>
+    <string name="child_emergency_hint">Okukubira ennamba z’obwetaavu kukola buli kiseera.</string>
+    <string name="child_call_112">Kuba 112</string>
+    <string name="child_call_999">Kuba 999 (poliisi)</string>
+    <string name="child_call_parent">Kuba %1$s</string>
+    <string name="child_parent_pad_title">PIN y’omuzadde</string>
+    <string name="child_pad_end_lock">Maliriza okuzibwa kati</string>
+    <string name="child_pad_add_5">Gattako ddakiika 5</string>
+    <string name="child_pad_add_10">Gattako ddakiika 10</string>
+    <string name="child_pad_settings">Ggulawo ebiteeso by’omuzadde</string>
+    <string name="lock_corner_description">Okuzibwa. Kwata emyaka esatu okulaba PIN y’omuzadde.</string>
+    <plurals name="voice_remaining">
+        <item quantity="one">Ddakiika %d okutuuka! Genda ozannye!</item>
+        <item quantity="other">Ddakiika %d okutuuka! Genda ozannye!</item>
+    </plurals>
+    <string name="voice_almost_there">Tusemberedde, tekisukka ddakiika!</string>
+    <string name="voice_patience">Begumiikiriza! Omusenyu gukyagwa.</string>
+    <string name="voice_done">Weebale nnyo! Kati osobola okukozesa essimu.</string>
+    <plurals name="voice_milestone">
+        <item quantity="one">Ddakiika %d esigadde!</item>
+        <item quantity="other">Ddakiika %d zisigadde!</item>
+    </plurals>
+
+    <!-- TODO(native review): schedules -->
+    <string name="schedules_title">Enteekateeka z’okuzibwa</string>
+    <string name="schedules_hint">Essimu eyazibwa yokka mu biseera bino, buli wiiki.</string>
+    <string name="schedules_empty">Tewali nteekateeka n’emu okutuuka kati.</string>
+    <string name="schedules_add_title">Gatta enteekateeka</string>
+    <string name="schedules_presets">Gatta mangu</string>
+    <string name="schedules_preset_homework">Homework: Mu.–Lw. 16:00–17:00</string>
+    <string name="schedules_preset_bedtime">Okwebaka: buli kiro 20:00–06:30</string>
+    <string name="schedules_preset_mornings">Ku makya g’essomero: Mu.–Lw. 06:30–07:45</string>
+    <string name="schedules_custom">Enteekateeka yo</string>
+    <string name="schedule_name">Erinnya</string>
+    <string name="schedule_start">Okutandika (HH:mm)</string>
+    <string name="schedule_end">Okuggwa (HH:mm)</string>
+    <string name="schedule_form_hint">Kozesa obudde bwa ssaawa 24. Obudde obw’okuggwa bwe buba obw’emabega w’okutandika, bugenda emabega w’ekiro.</string>
+    <string name="schedule_times">%1$s okutuuka %2$s</string>
+    <string name="schedule_enabled">Kikola</string>
+    <string name="action_delete">Ggyawo</string>
+    <string name="action_save">Tereka</string>
+    <string name="action_continue">Weeyongereyo</string>
+    <string name="action_back">Ddayo</string>
+    <string name="action_cancel">Sazaamu</string>
+
+    <!-- TODO(native review): apps -->
+    <string name="apps_title">App ezikkirizibwa</string>
+    <string name="apps_hint">App ezikkirizibwa zikola mu kuzibwa. Play Store, browsers ne dayaali y’essimu biziyiyizibwa buli kiseera mu kuzibwa. Ssa akabonero ku app za data nnyingi okuziziyiza ensimbi bwe ziggwaako.</string>
+    <string name="apps_search">Noonya app</string>
+    <string name="apps_loading">Ntuuma app…</string>
+    <string name="apps_allowed">Ezikkirizibwa</string>
+    <string name="apps_data_heavy">Za data nnyingi</string>
+
+    <!-- TODO(native review): reports -->
+    <string name="reports_title">Lipoota</string>
+    <string name="reports_loading">Ntuuma…</string>
+    <string name="reports_today">Leero</string>
+    <string name="reports_screen_minutes">Ddakiika ez’essirini</string>
+    <string name="reports_data_mb">MB eza data</string>
+    <string name="reports_week_screen">Ekiseera ky’essimu, ennaku 7 ezaayita</string>
+    <string name="reports_week_total">Gwonna: ddakiika %1$d</string>
+    <string name="reports_week_data">Data ya mobile, ennaku 7 ezaayita (MB)</string>
+    <string name="reports_week_data_total">Gwonna: MB %1$s</string>
+    <string name="reports_activity">Ebikoleddwa, ennaku 7 ezaayita</string>
+    <string name="reports_locks_started">Okuzibwa okutandise</string>
+    <string name="reports_locks_completed">Okuzibwa okuwedde</string>
+    <string name="reports_taps">Okukuba ssaaha</string>
+    <string name="reports_unlock_attempts">Okugezaako PIN okukyamu</string>
+    <string name="reports_blocked_attempts">Okugezaako app ezziyiziddwa</string>
+
+    <!-- TODO(native review): permissions -->
+    <string name="perm_title">Okukkirizibwa</string>
+    <string name="perm_intro">SandPause eetaaga okukkirizibwa okutono okukuuma okuzibwa. Buli kimu kirina omulimu gumu, era osobola okukiggyako mu Settings.</string>
+    <string name="perm_overlay_title">Kulabika ku app endala</string>
+    <string name="perm_overlay_why">Ekifo ky’okuzibwa kisobole okubikka app eziziyiziddwa mangu.</string>
+    <string name="perm_usage_title">Okukozesa okulaba</string>
+    <string name="perm_usage_why">Engeri endala ey’okulaba app eriko, era n’okukuuma ekiseera ky’essimu.</string>
+    <string name="perm_accessibility_title">Accessibility (okuzibwa okw’omutindo)</string>
+    <string name="perm_accessibility_why">Ekozesebwa okulaba app eziziyiziddwa bwe zigguka, ekifo ky’okuzibwa kidde. Eno y’engeri enkulu ku ssimu ezitali mu kuzibwa okujjuvu.</string>
+    <string name="perm_disclosure_title">Okubikkula okw’amaanyi</string>
+    <string name="perm_disclosure_body">SandPause ekozesa Accessibility okulaba app eri ku ssirini yokka. Tesoma bigambo ku ssirini, tekuwandiika kye omwana akuba, era tesindika kintu kyonna ebweru w’essimu. Okuligulawo kyetaagisa okuzibwa okukola.</string>
+    <string name="perm_disclosure_agree">Ntegeera era nkkiriza</string>
+    <string name="perm_exact_alarm_title">Alamu ez’omutuufu</string>
+    <string name="perm_exact_alarm_why">Enteekateeka y’okuzibwa etandike mu ddakiika entuufu.</string>
+    <string name="perm_battery_title">Bbaatule</string>
+    <string name="perm_battery_why">Eziyiza essimu okuggalawo SandPause emabega. Teeka SandPause ku Unrestricted oba Not optimised.</string>
+    <string name="perm_calls_title">Okukuba essimu</string>
+    <string name="perm_calls_why">Ssirini y’okuzibwa esobole okukuba ennamba z’obwetaavu n’abazadde b’olonze.</string>
+    <string name="perm_notifications_title">Okubuulirwa</string>
+    <string name="perm_notifications_why">Eraga ekiwandiiko ekitono ekikubuulira nti SandPause ekola.</string>
+    <string name="perm_open_settings">Ggulawo settings</string>
+    <string name="perm_allow">Kkiriza</string>
+    <string name="perm_granted">Ekkirizibwa</string>
+    <string name="perm_missing">Tekkirizibwa kati</string>
+
+    <!-- TODO(native review): full lock -->
+    <string name="owner_title">Okuteekawo okuzibwa okujjuvu</string>
+    <string name="owner_intro">Ku ssimu eteekeddwa ng’ennanyini kyuma, SandPause enywezeza ssirini y’okuzibwa, eziyiza okuggyawo n’embeera ey’obukuumi, era eziyiza okuddamu okuteekawo fakitole okuva mu Settings.</string>
+    <string name="owner_status_title">Embeera</string>
+    <string name="owner_status_yes">Nnanyini kyuma: yee. Okuzibwa okujjuvu kukola.</string>
+    <string name="owner_status_no">Nnanyini kyuma: nedda. Okuzibwa okw’omutindo kukozesebwa.</string>
+    <string name="owner_fallback_note">Okuzibwa okw’omutindo kukola ku ssimu yonna. Kwetaagisa Accessibility n’okulabika ku app endala.</string>
+    <string name="owner_adb_title">Teeka nnanyini kyuma (omulundi gumu, nga adb)</string>
+    <string name="owner_adb_hint">Ku kompyuta erina Android platform tools, kwata essimu ng’oggulawo USB debugging, oddireyo:</string>
+    <string name="owner_copy">Koppa ekiragiro</string>
+    <string name="owner_apply_hardening">Kola kati ebiteeso by’obukuumi</string>
+    <string name="owner_battery_title">Ebiteeso bya bbaatule</string>
+    <string name="owner_battery_hint">Abakola essimu abamu bagalawo app emabega. Goberera emitendera gy’essimu yo:</string>
+    <string name="owner_open_app_details">Ggulawo ebikwata ku SandPause</string>
+    <string name="owner_oem_transsion">Essimu za Tecno, Infinix ne Itel</string>
+    <string name="owner_oem_xiaomi">Essimu za Xiaomi, Redmi ne POCO</string>
+    <string name="owner_oem_samsung">Essimu za Samsung</string>
+    <string name="owner_oem_generic">Essimu endala</string>
+
+    <!-- TODO(native review): arrays -->
+    <string-array name="days_short">
+        <item>Muk</item>
+        <item>Lw2</item>
+        <item>Lw3</item>
+        <item>Lw4</item>
+        <item>Lw5</item>
+        <item>Lw6</item>
+        <item>Ssa</item>
+    </string-array>
+    <string-array name="suggestions_default">
+        <item>Genda ozannye omupiira!</item>
+        <item>Kuba ekifaananyi!</item>
+        <item>Soma ekitabo!</item>
+        <item>Yamba awaka oddeyo!</item>
+    </string-array>
+    <string-array name="owner_steps">
+        <item>Ddamu okuteekawo fakitole ku ssimu, oba kozesa ssimu etaliiko akawunti. Ggyawo akawunti ya Google n’endala ezisooka.</item>
+        <item>Maliriza wizard y’okuteekawo okutuuka ku screen ya Wi-Fi, oluvannyuma ggulawo Developer options ne USB debugging.</item>
+        <item>Ddukanya ekiragiro ekiri waggulu. Kirina okulaga: Success: Device owner set.</item>
+        <item>Ggulawo SandPause era maliriza okuteekawo bw’ekusaba.</item>
+    </string-array>
+    <string-array name="oem_transsion_steps">
+        <item>Phone Manager (oba Settings > Apps) > SandPause > Autostart: kkiriza.</item>
+        <item>Bbaatule: teeka SandPause ku No restrictions.</item>
+        <item>Recent apps: sibira SandPause bw’ekiraga akabonero k’okusiba.</item>
+    </string-array>
+    <string-array name="oem_xiaomi_steps">
+        <item>Settings > Apps > Manage apps > SandPause > Autostart: On.</item>
+        <item>Battery saver: No restrictions.</item>
+        <item>Recent apps: kka wansi ku kaadi ya SandPause era nyiga akabonero k’okusiba.</item>
+    </string-array>
+    <string-array name="oem_samsung_steps">
+        <item>Settings > Apps > SandPause > Battery > Unrestricted.</item>
+        <item>Device care > Battery > Background usage limits: ggyako SandPause ku Sleeping apps ne Deep sleeping apps.</item>
+    </string-array>
+    <string-array name="oem_generic_steps">
+        <item>Settings > Apps > SandPause > Battery > Unrestricted oba No restrictions.</item>
+        <item>Kkiriza auto-start oba background activity singa essimu yo ekiraga ebyo.</item>
+    </string-array>
+</resources>

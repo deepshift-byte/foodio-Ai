@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="sandpause_background">#FFF7F9FA</color>
+    <color name="sandpause_lock_background">#FFFFF6C9</color>
+    <color name="ic_launcher_background">#FF1F6F78</color>
+</resources>

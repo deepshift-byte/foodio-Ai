@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.SandPause" parent="android:Theme.Material.Light.NoActionBar">
+        <item name="android:windowBackground">@color/sandpause_background</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+    </style>
+
+    <!-- The child lock screen starts on yellow, so no white or dark flash shows. -->
+    <style name="Theme.SandPause.Lock" parent="android:Theme.Material.NoActionBar">
+        <item name="android:windowBackground">@color/sandpause_lock_background</item>
+        <item name="android:windowFullscreen">false</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+    </style>
+</resources>

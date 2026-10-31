@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">SandPause</string>
+    <string name="a11y_service_label">SandPause lock guard</string>
+    <string name="a11y_service_description">Notices which app is open during a SandPause lock, so the lock screen can come back. It does not read screen text or send data off the phone.</string>
+    <string name="admin_disable_warning">Turning off SandPause’s device admin needs a parent. The lock will return.</string>
+    <string name="channel_service_name">SandPause protection</string>
+    <string name="notification_title">SandPause is protecting this phone</string>
+    <string name="notification_active">Screen-time rules are on.</string>
+    <string name="notification_locked">Screen time is paused. Tap to open.</string>
+    <string name="data_budget_notice">Data budget used up for today.</string>
+
+    <!-- Setup -->
+    <string name="setup_step_count">Step %1$d of %2$d</string>
+    <string name="setup_welcome_title">Welcome to SandPause</string>
+    <string name="setup_welcome_body">SandPause helps your family set healthy screen time. First you will create a parent PIN, then choose the child’s name.</string>
+    <string name="setup_language">Language for the child’s screen</string>
+    <string name="setup_language_english">English</string>
+    <string name="setup_language_luganda">Luganda</string>
+    <string name="setup_name_title">Child’s name</string>
+    <string name="setup_name_hint">Shown on the lock screen, for example “Resting time for Amara”.</string>
+    <string name="setup_child_name">Child’s first name</string>
+    <string name="setup_pin_title">Create a parent PIN</string>
+    <string name="setup_pin_body">Use 4 to 6 digits. Only the parent should know it.</string>
+    <string name="setup_pin_confirm_title">Enter the PIN again</string>
+    <string name="setup_pin_confirm_body">Type the same PIN to confirm.</string>
+    <string name="setup_pin_confirm_label">Confirm PIN</string>
+    <string name="setup_pin_mismatch">The PINs did not match. Please try again.</string>
+    <string name="setup_recovery_title">Recovery question</string>
+    <string name="setup_recovery_body">If you forget the PIN, answer this question to set a new one.</string>
+    <string name="setup_recovery_question">Question</string>
+    <string name="setup_recovery_question_example">For example: my first school’s name?</string>
+    <string name="setup_recovery_answer">Answer</string>
+    <string name="setup_finish">Finish setup</string>
+
+    <!-- PIN and gate -->
+    <string name="gate_title">Parent area</string>
+    <string name="gate_subtitle">Enter your PIN to continue.</string>
+    <string name="gate_forgot">Forgot PIN?</string>
+    <string name="gate_cooldown">Too many wrong tries. Wait %1$s.</string>
+    <string name="gate_playstore_title">Parent check</string>
+    <string name="gate_playstore_body">Enter the parent PIN to open the Play Store.</string>
+    <plurals name="gate_wrong_pin">
+        <item quantity="one">Wrong PIN. %d try left.</item>
+        <item quantity="other">Wrong PIN. %d tries left.</item>
+    </plurals>
+    <string name="pin_prompt">Enter your PIN</string>
+    <string name="pin_delete_label">⌫</string>
+    <string name="pin_delete_description">Delete the last digit</string>
+    <string name="pin_submit_label">OK</string>
+    <string name="pin_submit_description">Check the PIN</string>
+
+    <!-- Recovery -->
+    <string name="recovery_title">Reset PIN</string>
+    <string name="recovery_body">Answer your recovery question, then choose a new PIN.</string>
+    <string name="recovery_question_label">Question: %1$s</string>
+    <string name="recovery_answer">Answer</string>
+    <string name="recovery_new_pin">New PIN</string>
+    <string name="recovery_reset">Reset PIN</string>
+    <string name="recovery_wrong_answer">That answer is not right.</string>
+
+    <!-- Home -->
+    <string name="home_title">%1$s’s phone</string>
+    <string name="home_child_fallback">your child</string>
+    <string name="home_status_title">Protection</string>
+    <string name="home_mode_owner">Full lock: device owner mode</string>
+    <string name="home_mode_fallback">Standard lock: accessibility mode</string>
+    <string name="home_mode_missing">Not fully set up yet. Open Permissions.</string>
+    <string name="home_lock_running">Locked: %1$s left</string>
+    <string name="home_end_lock">End lock now</string>
+    <string name="home_no_lock">No lock is running.</string>
+    <string name="home_quick_lock">Quick lock</string>
+    <string name="quick_minutes">%d min</string>
+    <string name="custom_hours">Hours</string>
+    <string name="custom_minutes">Minutes</string>
+    <string name="start_lock">Start</string>
+    <string name="home_rewards">Reward time</string>
+    <string name="home_rewards_hint">Adds time to a running lock, or to today’s allowance.</string>
+    <string name="reward_minutes">+%d min</string>
+    <string name="home_allowance">Daily screen-time allowance</string>
+    <string name="home_allowance_label">Minutes per day (0 = off)</string>
+    <string name="home_allowance_hint">When today’s time is used up, the phone locks until midnight.</string>
+    <string name="home_data_budget">Mobile data budget</string>
+    <string name="home_data_budget_label">MB per day (0 = off)</string>
+    <string name="home_data_budget_hint">When the budget is used up, apps marked data-heavy are blocked until tomorrow.</string>
+    <string name="home_play_store">Play Store</string>
+    <string name="home_play_store_pin">Require PIN to open Play Store</string>
+    <string name="home_play_store_pin_hint">A parent enters the PIN each time the Play Store opens.</string>
+    <string name="home_contacts">Parent contacts</string>
+    <string name="home_contacts_hint">Up to three numbers the child can call during a lock. Emergency numbers are always available.</string>
+    <string name="contact_name">Name</string>
+    <string name="contact_number">Phone number</string>
+    <string name="contact_add">Add contact</string>
+    <string name="action_remove">Remove</string>
+    <string name="home_suggestions">Play suggestions</string>
+    <string name="home_suggestions_hint">One suggestion per line. They change every 30 seconds on the lock screen. Leave empty to use the defaults.</string>
+    <string name="home_language">Language</string>
+    <string name="home_more">More settings</string>
+    <string name="nav_schedules">Lock schedules</string>
+    <string name="nav_apps">Allowed apps</string>
+    <string name="nav_reports">Reports</string>
+    <string name="nav_permissions">Permissions</string>
+    <string name="nav_owner">Full lock setup and battery</string>
+    <string name="home_debug_title">Debug</string>
+    <string name="home_fast_time">Fast time</string>
+    <string name="home_fast_time_hint">1 minute = %1$d seconds (debug builds only).</string>
+
+    <!-- Hourglass -->
+    <string name="hourglass_description_resting">Hourglass. Sand is falling. Tap to hear how long is left.</string>
+    <string name="hourglass_description_impatient">Hourglass. Patience, the sand is still falling.</string>
+    <string name="hourglass_description_finished">Hourglass. Finished. The phone can be used now.</string>
+
+    <!-- Child lock screen -->
+    <string name="child_resting_for">Resting time for %1$s</string>
+    <string name="child_emergency">Emergency</string>
+    <string name="child_emergency_title">Emergency</string>
+    <string name="child_emergency_hint">Calls to emergency numbers always work.</string>
+    <string name="child_call_112">Call 112</string>
+    <string name="child_call_999">Call 999 (police)</string>
+    <string name="child_call_parent">Call %1$s</string>
+    <string name="child_parent_pad_title">Parent PIN</string>
+    <string name="child_pad_end_lock">End the lock now</string>
+    <string name="child_pad_add_5">Add 5 minutes</string>
+    <string name="child_pad_add_10">Add 10 minutes</string>
+    <string name="child_pad_settings">Open parent settings</string>
+    <string name="lock_corner_description">Lock. Hold for three seconds for the parent PIN.</string>
+    <plurals name="voice_remaining">
+        <item quantity="one">%d minute to go! Go and play!</item>
+        <item quantity="other">%d minutes to go! Go and play!</item>
+    </plurals>
+    <string name="voice_almost_there">Almost there, less than a minute!</string>
+    <string name="voice_patience">Patience! The sand is still falling.</string>
+    <string name="voice_done">Well done! You can use the phone now.</string>
+    <plurals name="voice_milestone">
+        <item quantity="one">%d minute left!</item>
+        <item quantity="other">%d minutes left!</item>
+    </plurals>
+
+    <!-- Schedules -->
+    <string name="schedules_title">Lock schedules</string>
+    <string name="schedules_hint">The phone locks automatically in these windows, every week.</string>
+    <string name="schedules_empty">No schedules yet.</string>
+    <string name="schedules_add_title">Add a schedule</string>
+    <string name="schedules_presets">Quick add</string>
+    <string name="schedules_preset_homework">Homework: Mon–Fri 16:00–17:00</string>
+    <string name="schedules_preset_bedtime">Bedtime: every night 20:00–06:30</string>
+    <string name="schedules_preset_mornings">School mornings: Mon–Fri 06:30–07:45</string>
+    <string name="schedules_custom">Custom schedule</string>
+    <string name="schedule_name">Name</string>
+    <string name="schedule_start">Start (HH:mm)</string>
+    <string name="schedule_end">End (HH:mm)</string>
+    <string name="schedule_form_hint">Use 24-hour times. An end time before the start runs past midnight.</string>
+    <string name="schedule_times">%1$s to %2$s</string>
+    <string name="schedule_enabled">On</string>
+    <string name="action_delete">Delete</string>
+    <string name="action_save">Save</string>
+    <string name="action_continue">Continue</string>
+    <string name="action_back">Back</string>
+    <string name="action_cancel">Cancel</string>
+
+    <!-- Apps -->
+    <string name="apps_title">Allowed apps</string>
+    <string name="apps_hint">Allowed apps keep working during a lock. The Play Store, browsers and phone dialer are always blocked during a lock. Tag data-heavy apps to block them when the data budget is used up.</string>
+    <string name="apps_search">Search apps</string>
+    <string name="apps_loading">Loading apps…</string>
+    <string name="apps_allowed">Allowed</string>
+    <string name="apps_data_heavy">Data-heavy</string>
+
+    <!-- Reports -->
+    <string name="reports_title">Reports</string>
+    <string name="reports_loading">Loading…</string>
+    <string name="reports_today">Today</string>
+    <string name="reports_screen_minutes">Screen minutes</string>
+    <string name="reports_data_mb">MB of data</string>
+    <string name="reports_week_screen">Screen time, last 7 days</string>
+    <string name="reports_week_total">Total: %1$d minutes</string>
+    <string name="reports_week_data">Mobile data, last 7 days (MB)</string>
+    <string name="reports_week_data_total">Total: %1$s MB</string>
+    <string name="reports_activity">Activity, last 7 days</string>
+    <string name="reports_locks_started">Locks started</string>
+    <string name="reports_locks_completed">Locks completed</string>
+    <string name="reports_taps">Hourglass taps</string>
+    <string name="reports_unlock_attempts">Wrong PIN attempts</string>
+    <string name="reports_blocked_attempts">Blocked app attempts</string>
+
+    <!-- Permissions -->
+    <string name="perm_title">Permissions</string>
+    <string name="perm_intro">SandPause needs a few permissions to keep locks working. Each one has a single job, and you can turn any of them off in Settings.</string>
+    <string name="perm_overlay_title">Show over other apps</string>
+    <string name="perm_overlay_why">So the lock screen can cover a blocked app straight away.</string>
+    <string name="perm_usage_title">Usage access</string>
+    <string name="perm_usage_why">A backup way to notice which app is open, and to track screen time.</string>
+    <string name="perm_accessibility_title">Accessibility (standard lock)</string>
+    <string name="perm_accessibility_why">Used to notice when a blocked app opens, so the lock screen can come back. This is the main lock on phones that are not in full-lock mode.</string>
+    <string name="perm_disclosure_title">Prominent disclosure</string>
+    <string name="perm_disclosure_body">SandPause uses the Accessibility service only to notice which app is in front. It does not read the text on the screen, does not record what the child types, and sends nothing off the phone. Turning it on is needed for locks to work.</string>
+    <string name="perm_disclosure_agree">I understand and agree</string>
+    <string name="perm_exact_alarm_title">Exact alarms</string>
+    <string name="perm_exact_alarm_why">So a scheduled lock starts at the exact minute.</string>
+    <string name="perm_battery_title">Battery</string>
+    <string name="perm_battery_why">Stops the phone from closing SandPause in the background. Set SandPause to Unrestricted or Not optimised.</string>
+    <string name="perm_calls_title">Phone calls</string>
+    <string name="perm_calls_why">So the lock screen can call emergency numbers and the parent contacts you chose.</string>
+    <string name="perm_notifications_title">Notifications</string>
+    <string name="perm_notifications_why">Shows the small note that tells you SandPause is running.</string>
+    <string name="perm_open_settings">Open settings</string>
+    <string name="perm_allow">Allow</string>
+    <string name="perm_granted">Allowed</string>
+    <string name="perm_missing">Not allowed yet</string>
+
+    <!-- Full lock (device owner) -->
+    <string name="owner_title">Full lock setup</string>
+    <string name="owner_intro">On a phone set up as device owner, SandPause pins the lock screen, blocks uninstalling and safe mode, and blocks factory reset from Settings.</string>
+    <string name="owner_status_title">Status</string>
+    <string name="owner_status_yes">Device owner: yes. Full lock is active.</string>
+    <string name="owner_status_no">Device owner: no. Standard lock is used.</string>
+    <string name="owner_fallback_note">Standard lock works on any phone. It needs the Accessibility and overlay permissions.</string>
+    <string name="owner_adb_title">Set device owner (one time, with adb)</string>
+    <string name="owner_adb_hint">On a computer with Android platform tools, connect the phone with USB debugging on, then run:</string>
+    <string name="owner_copy">Copy command</string>
+    <string name="owner_apply_hardening">Apply protection settings now</string>
+    <string name="owner_battery_title">Battery settings</string>
+    <string name="owner_battery_hint">Some phone makers close apps in the background. Follow the steps for your phone:</string>
+    <string name="owner_open_app_details">Open SandPause app info</string>
+    <string name="owner_oem_transsion">Tecno, Infinix and Itel phones</string>
+    <string name="owner_oem_xiaomi">Xiaomi, Redmi and POCO phones</string>
+    <string name="owner_oem_samsung">Samsung phones</string>
+    <string name="owner_oem_generic">Other phones</string>
+
+    <!-- Arrays -->
+    <string-array name="days_short">
+        <item>Mon</item>
+        <item>Tue</item>
+        <item>Wed</item>
+        <item>Thu</item>
+        <item>Fri</item>
+        <item>Sat</item>
+        <item>Sun</item>
+    </string-array>
+    <string-array name="suggestions_default">
+        <item>Go kick a ball!</item>
+        <item>Draw a picture!</item>
+        <item>Read a story!</item>
+        <item>Help at home and come back!</item>
+    </string-array>
+    <string-array name="owner_steps">
+        <item>Factory reset the phone, or use a phone with no accounts added yet. Remove Google and other accounts first.</item>
+        <item>Finish the setup wizard only up to the Wi-Fi screen, then turn on Developer options and USB debugging.</item>
+        <item>Run the command above. It should print: Success: Device owner set.</item>
+        <item>Open SandPause and complete setup if it asks you to.</item>
+    </string-array>
+    <string-array name="oem_transsion_steps">
+        <item>Phone Manager (or Settings > Apps) > SandPause > Autostart: allow.</item>
+        <item>Battery: set SandPause to No restrictions.</item>
+        <item>Recent apps: lock SandPause if the phone shows a lock icon on its card.</item>
+    </string-array>
+    <string-array name="oem_xiaomi_steps">
+        <item>Settings > Apps > Manage apps > SandPause > Autostart: On.</item>
+        <item>Battery saver: No restrictions.</item>
+        <item>Recent apps: pull down SandPause’s card and tap the lock icon.</item>
+    </string-array>
+    <string-array name="oem_samsung_steps">
+        <item>Settings > Apps > SandPause > Battery > Unrestricted.</item>
+        <item>Device care > Battery > Background usage limits: remove SandPause from Sleeping apps and Deep sleeping apps.</item>
+    </string-array>
+    <string-array name="oem_generic_steps">
+        <item>Settings > Apps > SandPause > Battery > Unrestricted or No restrictions.</item>
+        <item>Allow auto-start or background activity if your phone shows those options.</item>
+    </string-array>
+
+</resources>
