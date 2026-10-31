@@ -282,7 +282,7 @@ private fun ContactRow(contact: ContactDto, onRemove: () -> Unit) {
 }
 
 @Composable
-private fun AddContactRow(onAdd: (String, String) -> Unit) {
+private fun AddContactRow(onAdd: (String, String) -> Boolean) {
     var name by rememberSaveable { mutableStateOf("") }
     var number by rememberSaveable { mutableStateOf("") }
     OutlinedTextField(

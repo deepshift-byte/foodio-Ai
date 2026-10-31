@@ -37,7 +37,7 @@ class DeviceOwnerController @Inject constructor(
         val dpm = dpm ?: return
         if (!isDeviceOwner()) return
         runCatching { dpm.setUninstallBlocked(admin, ownPackage, true) }
-        runCatching { dpm.setSafeBootDisabled(admin, true) }
+        runCatching { dpm.addUserRestriction(admin, UserManager.DISALLOW_SAFE_BOOT) }
         runCatching { dpm.addUserRestriction(admin, UserManager.DISALLOW_FACTORY_RESET) }
     }
 
